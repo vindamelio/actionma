@@ -10,7 +10,7 @@ repositories {
     //mavenCentral()
     maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
@@ -39,7 +39,7 @@ publishing {
         //mavenLocal()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
