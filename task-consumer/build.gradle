@@ -1,7 +1,14 @@
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
+        //mavenLocal()
+        //mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
     dependencies {
         classpath 'cmx.vincenzo:task-producer:1.0.1'
@@ -11,8 +18,15 @@ plugins {
     id 'java'
 }
 repositories {
-    mavenLocal()
-    mavenCentral()
+    //mavenLocal()
+    //mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {

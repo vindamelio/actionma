@@ -7,7 +7,15 @@ group = 'cmx.vincenzo'
 version = '1.0.1'
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
+    maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
 }
 
 dependencies {
@@ -28,6 +36,14 @@ publishing {
         }
     }
     repositories {
-        mavenLocal()
+        //mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/TUO_USERNAME/TUO_REPO")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
