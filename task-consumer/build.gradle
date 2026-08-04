@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'cmx.vincenzo:task-producer:1.0.1'
+    }
+}
+plugins {
+    id 'java'
+}
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // Serve al codice di test per compilare contro GreetingTask
+    testImplementation 'cmx.vincenzo:task-producer:1.0.1'
+    testImplementation gradleApi()
+    testImplementation gradleTestKit()
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.register('greet', cmx.vincenzo.GreetingTaska) {
+    message = 'Ciao dal sottoprogetto consumer!'
+}
+tasks.register('testGreetingTask', Test) {
+    description = 'Esegue solo i test relativi a GreetingTaska'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching "cmx.vincenzo.GreetingTaskaTest"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+

@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'cmx.vincenzo'
+version = '1.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // gradleApi() serve solo in compilazione: a runtime le classi
+    // sono già fornite dal classloader di Gradle, quindi NON va
+    // messa come implementation (altrimenti finisce, errata, nel POM)
+    compileOnly gradleApi()
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
