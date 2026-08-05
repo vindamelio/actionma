@@ -3,8 +3,17 @@ plugins {
     id 'maven-publish'
 }
 
+def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
+def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
+
+version = gitTag != null
+    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
+    : "0.0.0-SNAPSHOT-${gitSha}"              // es. "0.0.0-SNAPSHOT-a1b2c3d"
+
+//version = '1.0.1'
+
 group = 'cmx.vincenzo'
-version = '1.0.1'
+
 
 repositories {
     //mavenCentral()
@@ -36,7 +45,7 @@ publishing {
         }
     }
     repositories {
-        //mavenLocal()
+        mavenLocal()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/vindamelio/actionma")

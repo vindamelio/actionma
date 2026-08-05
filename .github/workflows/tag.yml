@@ -1,16 +1,13 @@
-name: Publish task-producer
+name: Tag task-producer
 
 on:
   push:
-    branches: [main]
-  #  paths:
-  #    - 'task-producer/**'
-  #workflow_dispatch:
-  #pull_request:
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  publish:
-  #publish-and-build:
+  #publish:
+  publish-and-build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,17 +26,18 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to GitHub Packages
-        run: ./gradlew :task-producer:publish
+        #run: ./gradlew :task-producer:publish
+        run: ./gradlew publish
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REF_TYPE: branch
-          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_TYPE: tag
+          GITHUB_REF_NAME: ${{ github.ref_name }}
 
       #- name: Build and test task-consumer
       #  run: ./gradlew :task-consumer:build
       #  env:
       #    GITHUB_ACTOR: ${{ github.actor }}
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    GITHUB_REF_TYPE: branch
-      #    GITHUB_SHA: ${{ github.sha }}
+      #    GITHUB_REF_TYPE: tag
+      #    GITHUB_REF_NAME: ${{ github.ref_name }}
