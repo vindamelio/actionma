@@ -13,4 +13,5 @@ include 'task-producer'
 include 'task-consumer'
 println("This is executed during the initialization phase.")
 
-
+println("setting gradle.properties: ")
+def gitVar = "setta1"

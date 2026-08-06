@@ -1,4 +1,10 @@
+
+
 buildscript {
+    def gitVer = project.findProperty("gpr.version") ?: "0.0.0-SNAPSHOT"
+
+    println("task-consumer gradle.properties: gitVer=${gitVer} ")
+    
     repositories {
         mavenLocal()
         //mavenCentral()
