@@ -34,6 +34,13 @@ class GreetingTaskaFunctionalTest {
             "    repositories {\n" +
             "        mavenLocal()\n" +
             "        mavenCentral()\n" +
+            "        maven {\n" +
+            "            url = uri('https://maven.pkg.github.com/vindamelio/actionma')\n" +
+            "            credentials {\n" +
+            "                username = project.findProperty('gpr.user') ?: System.getenv('GITHUB_ACTOR')\n" +
+            "                password = project.findProperty('gpr.token') ?: System.getenv('GITHUB_TOKEN')\n" +
+            "            }\n" +
+            "        }\n" +
             "    }\n" +
             "    dependencies {\n" +
             //"        classpath 'cmx.vincenzo:task-producer:1.0.1'\n" +
