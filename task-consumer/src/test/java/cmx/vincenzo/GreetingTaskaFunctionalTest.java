@@ -36,7 +36,8 @@ class GreetingTaskaFunctionalTest {
             "        mavenCentral()\n" +
             "    }\n" +
             "    dependencies {\n" +
-            "        classpath 'cmx.vincenzo:task-producer:1.0.1'\n" +
+            //"        classpath 'cmx.vincenzo:task-producer:1.0.1'\n" +
+            "        classpath 'cmx.vincenzo:task-producer:0.0.0-SNAPSHOT-local'\n" +
             "    }\n" +
             "}\n" +
             "tasks.register('greet', cmx.vincenzo.GreetingTaska) {\n" +

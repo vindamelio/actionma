@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        //mavenLocal()
+        mavenLocal()
         //mavenCentral()
         maven {
             url = uri("https://maven.pkg.github.com/vindamelio/actionma")
@@ -18,7 +18,7 @@ plugins {
     id 'java'
 }
 repositories {
-    //mavenLocal()
+    mavenLocal()
     mavenCentral()
     maven {
         url = uri("https://maven.pkg.github.com/vindamelio/actionma")
@@ -31,7 +31,9 @@ repositories {
 
 dependencies {
     // Serve al codice di test per compilare contro GreetingTask
-    testImplementation 'cmx.vincenzo:task-producer:1.0.1'
+    //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
+    testImplementation 'cmx.vincenzo:task-producer:0.0.0-SNAPSHOT-local'
+    
     testImplementation gradleApi()
     testImplementation gradleTestKit()
 
@@ -41,7 +43,7 @@ dependencies {
 }
 
 tasks.register('greet', cmx.vincenzo.GreetingTaska) {
-    message = 'Ciao dal sottoprogetto consumer!'
+    message.set('Ciao dal sottoprogetto consumer!')
 }
 tasks.register('testGreetingTask', Test) {
     description = 'Esegue solo i test relativi a GreetingTaska'
@@ -58,6 +60,11 @@ tasks.register('testGreetingTask', Test) {
 
 test {
     useJUnitPlatform()
+
+    jvmArgs(
+        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+        '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+    )
 }
 
 
