@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GreetingTaskaTest {
 	
-	private Project project;
+	public Project project;
     private GreetingTaska task;
 
     @BeforeEach
