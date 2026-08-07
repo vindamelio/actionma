@@ -1,10 +1,13 @@
 
 
 buildscript {
+
+    def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
+    def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
     def gitVer = project.findProperty("gpr.version") ?: "0.0.0-SNAPSHOT"
 
-    println("task-consumer gradle.properties: gitVer=${gitVer} ")
-    
+    println("task-consumer gradle.properties: gitVer=${gitVer} ${gitSha} ${gitTag} ")
+      
     repositories {
         mavenLocal()
         //mavenCentral()
