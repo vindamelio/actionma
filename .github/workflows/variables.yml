@@ -1,28 +1,21 @@
-name: Veriables
+name: Variables
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
+  job1:
+    name: job1
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+ 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Echo variables
+      - name: job1 step1
         run: |
           echo "Actor: ${{ github.actor }}"
           echo "Repository: ${{ github.repository }}"
+          echo "Git Version: ${{ env.gitVer }}"
+          echo "Git SHA: ${{ env.gitSha }}"
+          echo "Git Tag: ${{ env.gitTag }}"
 
       
