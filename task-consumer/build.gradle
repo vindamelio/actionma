@@ -4,9 +4,19 @@ buildscript {
 
     def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
     def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
-    def gitVer = project.findProperty("gpr.version") ?: "0.0.0-SNAPSHOT"
+    def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
+    def gitRel = project.findProperty("gpr.release") ?: null
 
-    println("task-consumer gradle.properties: gitVer=${gitVer} ${gitSha} ${gitTag} ")
+    println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ")
+
+    //version = gitTag != null
+    //    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
+    //    : "${gitVer}-${gitSha}"                   // es. "0.0.0-SNAPSHOT-a1b2c3d"
+
+    def version = gitRel != null
+       ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
+       : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
+
       
     repositories {
         mavenLocal()
@@ -20,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'cmx.vincenzo:task-producer:0.0.0-SNAPSHOT-local'
+        classpath 'cmx.vincenzo:task-producer:${version}'
     }
 }
 plugins {
@@ -41,7 +51,7 @@ repositories {
 dependencies {
     // Serve al codice di test per compilare contro GreetingTask
     //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
-    testImplementation 'cmx.vincenzo:task-producer:0.0.0-SNAPSHOT-local'
+    testImplementation 'cmx.vincenzo:task-producer:${version}'
     
     testImplementation gradleApi()
     testImplementation gradleTestKit()
