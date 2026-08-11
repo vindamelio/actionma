@@ -33,7 +33,7 @@ buildscript {
     }
     dependencies {
         classpath "cmx.vincenzo:task-producer:${version}"
-        testImplementation project(':nome-altro-sottoprogetto')
+        
     }
 }
 */
@@ -54,11 +54,12 @@ repositories {
     }
 }
 */
+
 dependencies {
     // Serve al codice di test per compilare contro GreetingTask
     //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
     //testImplementation "cmx.vincenzo:task-producer:${version}"
-    testImplementation project(':test-producer')
+    testImplementation project(':task-producer')
     
     testImplementation gradleApi()
     testImplementation gradleTestKit()
