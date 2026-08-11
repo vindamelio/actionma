@@ -13,11 +13,11 @@ buildscript {
     //    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
     //    : "${gitVer}-${gitSha}"                   // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-    def version = gitRel != null
+    version = gitRel != null
        ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
        : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-    println("task-producer version: ${vers} ${version}")
+    println("task-producer version:  ${version}")
 
     repositories {
         mavenLocal()
