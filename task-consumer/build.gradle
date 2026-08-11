@@ -13,7 +13,7 @@ buildscript {
     //    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
     //    : "${gitVer}-${gitSha}"                   // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-    def vers = gitRel != null
+    def version = gitRel != null
        ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
        : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
