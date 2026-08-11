@@ -13,11 +13,12 @@ buildscript {
     //    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
     //    : "${gitVer}-${gitSha}"                   // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-    def version = gitRel != null
+    def vers = gitRel != null
        ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
        : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-      
+    println("task-producer version: ${vers} ${version}")
+
     repositories {
         mavenLocal()
         //mavenCentral()
@@ -30,7 +31,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'cmx.vincenzo:task-producer:${version}'
+        classpath "cmx.vincenzo:task-producer:${version}"
     }
 }
 plugins {
@@ -51,7 +52,7 @@ repositories {
 dependencies {
     // Serve al codice di test per compilare contro GreetingTask
     //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
-    testImplementation 'cmx.vincenzo:task-producer:${version}'
+    testImplementation "cmx.vincenzo:task-producer:${version}"
     
     testImplementation gradleApi()
     testImplementation gradleTestKit()

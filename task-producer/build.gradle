@@ -15,14 +15,17 @@ println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} $
 //    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
 //    : "${gitVer}-${gitSha}"              // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
-version = gitRel != null
-    ? "${gitVer}"           // es. tag "v1.2.0" -> versione "1.2.0"
+def vers = gitRel != null
+    ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
     : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
 //version = '1.0.1'
 
-group = 'cmx.vincenzo'
+version = vers
 
+println("task-producer version: ${vers} ${version}")
+
+group = 'cmx.vincenzo'
 
 repositories {
     //mavenCentral()
