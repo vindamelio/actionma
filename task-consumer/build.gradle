@@ -1,5 +1,6 @@
 
 
+/*
 buildscript {
 
     def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
@@ -32,11 +33,15 @@ buildscript {
     }
     dependencies {
         classpath "cmx.vincenzo:task-producer:${version}"
+        testImplementation project(':nome-altro-sottoprogetto')
     }
 }
+*/
+
 plugins {
     id 'java'
 }
+/*
 repositories {
     mavenLocal()
     mavenCentral()
@@ -48,11 +53,12 @@ repositories {
         }
     }
 }
-
+*/
 dependencies {
     // Serve al codice di test per compilare contro GreetingTask
     //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
-    testImplementation "cmx.vincenzo:task-producer:${version}"
+    //testImplementation "cmx.vincenzo:task-producer:${version}"
+    testImplementation project(':test-producer')
     
     testImplementation gradleApi()
     testImplementation gradleTestKit()
