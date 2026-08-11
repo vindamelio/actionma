@@ -1,8 +1,14 @@
 name: Variables
 
 on:
-  push:
-    branches: [main]
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
 
 jobs:
   job1:
@@ -18,4 +24,17 @@ jobs:
           echo "Git SHA: ${{ env.gitSha }}"
           echo "Git Tag: ${{ env.gitTag }}"
 
-      
+  triage:
+    name: triage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: triage step1
+        uses: actions/labeler@v6
+        with:
+          repo-token: ${{ secrets.token }}
+          configuration-path: ${{ inputs.config-path }}
+      - name: triage step2
+        run: |
+            echo "repo-token: $repo-token"
+            echo "configuration-path: $configuration-path"
