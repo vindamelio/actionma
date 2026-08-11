@@ -38,3 +38,6 @@ jobs:
         run: |
             echo "repo-token: $repo-token"
             echo "configuration-path: $configuration-path"
+            echo "repo-token: ${{ secrets.token }}"
+            echo "configuration-path: ${{ inputs.config-path }}"
+
