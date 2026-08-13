@@ -31,35 +31,13 @@ class GreetingTaskaFunctionalTest {
         // puntando al producer già pubblicato in mavenLocal
         String buildFileContent =
             "buildscript {\n" +
-            "def envProps = new Properties() \n" +
-            "file(${rootDir}/.env).with { f -> \n" +
-            "    if (f.exists()) { \n" +
-            "      f.withInputStream { envProps.load(it) } \n" +
-            "    } \n" +
-            "} \n" +
-            "def use = envProps.getProperty('GITHUB_ACTOR') ?: System.getenv('GITHUB_ACTOR') \n" +
-            "def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN') \n" +
-            "def runNumber = System.getenv('GITHUB_RUN_NUMBER') ?: '0' \n" +
-            "def gitTag = System.getenv('GITHUB_REF_TYPE') == 'tag' ? System.getenv('GITHUB_REF_NAME') : null \n" +
-            "def gitSha = System.getenv('GITHUB_SHA')?.take(7) ?: 'local' \n" +
-            "def gitVer = project.findProperty('gpr.version') ?: '0.0.0' \n" +
-            "def gitRel = project.findProperty('gpr.release') ?: null \n" +
-            "def resolvedVersion = gitRel != null ? \"${gitVer\"} : ${gitVer}-SNAPSHOT-${gitSha} \n" +
-
             "    repositories {\n" +
             "        mavenLocal()\n" +
             "        mavenCentral()\n" +
-            "        maven {\n" +
-            "            url = uri('https://maven.pkg.github.com/vindamelio/actionma')\n" +
-            "            credentials {\n" +
-            "                username = use \n" +
-            "                password = psw \n" +
-            "            }\n" +
-            "        }\n" +
             "    }\n" +
             "    dependencies {\n" +
             //"        classpath 'cmx.vincenzo:task-producer:1.0.1'\n" +
-            "        classpath \"cmx.vincenzo:task-producer:${resolvedVersion}\"\n" +
+            "        classpath 'cmx.vincenzo:task-producer:0.0.1-SNAPSHOT-local'\n" +
             "    }\n" +
             "}\n" +
             "tasks.register('greet', cmx.vincenzo.GreetingTaska) {\n" +
