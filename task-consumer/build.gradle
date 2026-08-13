@@ -73,7 +73,10 @@ dependencies {
     //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
     //testImplementation "cmx.vincenzo:task-producer:${version}"
     //implementation project(':task-producer')
-    testImplementation project(':task-producer')
+    //testImplementation project(':task-producer')
+
+    implementation "cmx.vincenzo:task-producer:${version}"
+    testImplementation "cmx.vincenzo:task-producer:${version}"
 
     testImplementation gradleApi()
     testImplementation gradleTestKit()
