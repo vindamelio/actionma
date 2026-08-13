@@ -14,8 +14,8 @@ def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
 def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
 def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
 def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
-def gitVer = "0.0.0"
-def gitRel = null
+def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
+def gitRel = project.findProperty("gpr.release") ?: null
 
 def resolvedVersion = gitRel != null
     ? "${gitVer}"
@@ -60,8 +60,8 @@ def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
 def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
 def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
 def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
-def gitVer = "0.0.0"
-def gitRel = null
+def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
+def gitRel = project.findProperty("gpr.release") ?: null
 
 def resolvedVersion = gitRel != null
     ? "${gitVer}"
