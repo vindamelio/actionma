@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build to GitHub Packages
-        run: ./gradlew --configuration-on-demand :task-consumer:build 
+        run: ./gradlew --configure-on-demand :task-consumer:build 
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
