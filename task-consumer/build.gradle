@@ -1,7 +1,10 @@
+// ─── Variabili condivise, dichiarate PRIMA di qualsiasi blocco ───
+// Visibili sia dentro buildscript{} sia nel resto dello script
+
 def envProps = new Properties()
-file("${rootDir}/.env").with { file ->
-    if (file.exists()) {
-        file.withInputStream { envProps.load(it) }
+file("${rootDir}/.env").with { f ->
+    if (f.exists()) {
+        f.withInputStream { envProps.load(it) }
     }
 }
 
@@ -11,24 +14,20 @@ def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
 def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
 def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
 def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
-def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
-def gitRel = project.findProperty("gpr.release") ?: null
+def gitVer = "0.0.0"
+def gitRel = null
 
+def resolvedVersion = gitRel != null
+    ? "${gitVer}"
+    : "${gitVer}-SNAPSHOT-${gitSha}"
 
-version = gitRel != null
-    ? "${gitVer}"                              
-    : "${gitVer}-SNAPSHOT-${gitSha}" 
+println("task-consumer resolved: gitVer=${gitVer} gitRel=${gitRel} gitSha=${gitSha} gitTag=${gitTag} runNumber=${runNumber} version=${resolvedVersion}")
 
-
-println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ${use} ${psw} ${version}")
-
+// ─────────────────────────────────────────────────────────────────
 
 buildscript {
-
     repositories {
-
-       //mavenCentral()
-       if (runNumber != "0") {
+        if (runNumber != "0") {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/vindamelio/actionma")
@@ -37,48 +36,38 @@ buildscript {
                     password = psw
                 }
             }
-        }else{
+        } else {
             mavenLocal()
         }
     }
     dependencies {
-        classpath "cmx.vincenzo:task-producer:${version}"
-        
+        classpath "cmx.vincenzo:task-producer:${resolvedVersion}"
     }
 }
-
 
 plugins {
     id 'java'
 }
 
-
 repositories {
     mavenCentral()
     if (runNumber != "0") {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/vindamelio/actionma")
-                credentials {
-                    username = use
-                    password = psw
-                }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
+            credentials {
+                username = use
+                password = psw
             }
-    }else{
-            mavenLocal()
+        }
+    } else {
+        mavenLocal()
     }
 }
 
-
 dependencies {
-    // Serve al codice di test per compilare contro GreetingTask
-    //testImplementation 'cmx.vincenzo:task-producer:1.0.1'
-    //testImplementation "cmx.vincenzo:task-producer:${version}"
-    //implementation project(':task-producer')
-    //testImplementation project(':task-producer')
-
-    implementation "cmx.vincenzo:task-producer:${version}"
-    testImplementation "cmx.vincenzo:task-producer:${version}"
+    implementation "cmx.vincenzo:task-producer:${resolvedVersion}"
+    testImplementation "cmx.vincenzo:task-producer:${resolvedVersion}"
 
     testImplementation gradleApi()
     testImplementation gradleTestKit()
@@ -91,6 +80,7 @@ dependencies {
 tasks.register('greet', cmx.vincenzo.GreetingTaska) {
     message.set('Ciao dal sottoprogetto consumer!')
 }
+
 tasks.register('testGreetingTask', Test) {
     description = 'Esegue solo i test relativi a GreetingTaska'
     group = 'verification'
@@ -112,5 +102,3 @@ test {
         '--add-opens', 'java.base/java.util=ALL-UNNAMED'
     )
 }
-
-
