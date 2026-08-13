@@ -1,11 +1,14 @@
 name: Generic
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["Publish task-producer"]
+    types:
+      - completed
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
