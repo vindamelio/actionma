@@ -1,4 +1,5 @@
 
+/*
 buildscript {
     def envProps = new Properties()
     file("${rootDir}/.env").with { file ->
@@ -45,15 +46,40 @@ buildscript {
         
     }
 }
+*/
 
 
 plugins {
     id 'java'
 }
+    def envProps = new Properties()
+    file("${rootDir}/.env").with { file ->
+        if (file.exists()) {
+            file.withInputStream { envProps.load(it) }
+        }
+    }
+
+    def use = envProps.getProperty('GITHUB_ACTOR') ?: System.getenv('GITHUB_ACTOR')
+    def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
+
+    def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
+    def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
+    def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
+    def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
+    def gitRel = project.findProperty("gpr.release") ?: null
+
+
+    version = gitRel != null
+        ? "${gitVer}"                              
+        : "${gitVer}-SNAPSHOT-${gitSha}" 
+
+
+    println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ${use} ${psw} ${version}")
+
 
 repositories {
     mavenCentral()
-    //if (runNumber != "0") {
+    if (runNumber != "0") {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/vindamelio/actionma")
@@ -62,9 +88,9 @@ repositories {
                     password = psw
                 }
             }
-    //}else{
+    }else{
             mavenLocal()
-    //}
+    }
 }
 
 
