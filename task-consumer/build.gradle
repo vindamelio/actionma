@@ -26,8 +26,8 @@ buildscript {
 
     repositories {
 
-        //mavenCentral()
-       if (runNumber != "0") {
+       //mavenCentral()
+       //if (runNumber != "0") {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/vindamelio/actionma")
@@ -36,9 +36,9 @@ buildscript {
                     password = psw
                 }
             }
-        }else{
-            mavenLocal()
-        }
+        //}else{
+        //    mavenLocal()
+        //}
     }
     dependencies {
         classpath "cmx.vincenzo:task-producer:${version}"
