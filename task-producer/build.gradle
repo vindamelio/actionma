@@ -3,40 +3,44 @@ plugins {
     id 'maven-publish'
 }
 
+def envProps = new Properties()
+file("${rootDir}/.env").with { file ->
+        if (file.exists()) {
+            file.withInputStream { envProps.load(it) }
+        }
+}
 
+def use = envProps.getProperty('GITHUB_ACTOR') ?: System.getenv('GITHUB_ACTOR')
+def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
+
+def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
 def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
 def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
 def gitVer = project.findProperty("gpr.version") ?: "0.0.0"
 def gitRel = project.findProperty("gpr.release") ?: null
 
-println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ")
-
-//version = gitTag != null
-//    ? gitTag.replaceFirst("^v", "")           // es. tag "v1.2.0" -> versione "1.2.0"
-//    : "${gitVer}-${gitSha}"              // es. "0.0.0-SNAPSHOT-a1b2c3d"
 
 version = gitRel != null
-    ? "${gitVer}"                              // es. tag "v1.2.0" -> versione "1.2.0"
-    : "${gitVer}-SNAPSHOT-${gitSha}"           // es. "0.0.0-SNAPSHOT-a1b2c3d"
+    ? "${gitVer}"                              
+    : "${gitVer}-SNAPSHOT-${runNumber}" 
+
 
 //version = '1.0.1'
-
-
-println("task-producer version: ${version}")
+println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ${use} ${psw} ${version}")
 
 group = 'cmx.vincenzo'
 
-repositories {
+//repositories {
     //mavenCentral()
-    maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
-            }
-        }
-}
+//    maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
+//            credentials {
+//                username = ${use} ?: System.getenv("GITHUB_ACTOR")
+//                password = ${psw} ?: System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//}
 
 dependencies {
     // gradleApi() serve solo in compilazione: a runtime le classi
@@ -57,12 +61,14 @@ publishing {
     }
     repositories {
         mavenLocal()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/vindamelio/actionma")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        if (runNumber != "0") {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/vindamelio/actionma")
+                credentials {
+                    username = use
+                    password = psw
+                }
             }
         }
     }

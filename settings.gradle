@@ -10,7 +10,7 @@
 rootProject.name = "g_prod_cons_publish"
 //rootProject.name = 'gradle-multiproject-demo'
 include 'task-producer'
-include 'task-consumer'
+//include 'task-consumer'
 println("This is executed during the initialization phase.")
 
 println("setting gradle.properties: ")
