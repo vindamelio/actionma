@@ -51,13 +51,6 @@ buildscript {
 plugins {
     id 'java'
 }
-    def envProps = new Properties()
-    file("${rootDir}/.env").with { file ->
-        if (file.exists()) {
-            file.withInputStream { envProps.load(it) }
-        }
-    }
-
 
 
 repositories {
