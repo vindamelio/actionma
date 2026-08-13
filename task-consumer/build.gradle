@@ -21,7 +21,7 @@ def resolvedVersion = gitRel != null
     ? "${gitVer}"
     : "${gitVer}-SNAPSHOT-${gitSha}"
 
-println("task-consumer resolved: gitVer=${gitVer} gitRel=${gitRel} gitSha=${gitSha} gitTag=${gitTag} runNumber=${runNumber} version=${resolvedVersion}")
+println("task-consumer pinco: gitVer=${gitVer} gitRel=${gitRel} gitSha=${gitSha} gitTag=${gitTag} runNumber=${runNumber} version=${resolvedVersion}")
 
 
     repositories {
