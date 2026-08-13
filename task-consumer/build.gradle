@@ -1,5 +1,5 @@
-// ─── Variabili condivise, dichiarate PRIMA di qualsiasi blocco ───
-// Visibili sia dentro buildscript{} sia nel resto dello script
+
+buildscript {
 
 def envProps = new Properties()
 file("${rootDir}/.env").with { f ->
@@ -23,9 +23,7 @@ def resolvedVersion = gitRel != null
 
 println("task-consumer resolved: gitVer=${gitVer} gitRel=${gitRel} gitSha=${gitSha} gitTag=${gitTag} runNumber=${runNumber} version=${resolvedVersion}")
 
-// ─────────────────────────────────────────────────────────────────
 
-buildscript {
     repositories {
         if (runNumber != "0") {
             maven {
@@ -48,6 +46,28 @@ buildscript {
 plugins {
     id 'java'
 }
+
+def envProps = new Properties()
+file("${rootDir}/.env").with { f ->
+    if (f.exists()) {
+        f.withInputStream { envProps.load(it) }
+    }
+}
+
+def use = envProps.getProperty('GITHUB_ACTOR') ?: System.getenv('GITHUB_ACTOR')
+def psw = envProps.getProperty('GITHUB_TOKEN') ?: System.getenv('GITHUB_TOKEN')
+
+def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
+def gitTag = System.getenv("GITHUB_REF_TYPE") == "tag" ? System.getenv("GITHUB_REF_NAME") : null
+def gitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
+def gitVer = "0.0.0"
+def gitRel = null
+
+def resolvedVersion = gitRel != null
+    ? "${gitVer}"
+    : "${gitVer}-SNAPSHOT-${gitSha}"
+
+println("task-consumer resolved: gitVer=${gitVer} gitRel=${gitRel} gitSha=${gitSha} gitTag=${gitTag} runNumber=${runNumber} version=${resolvedVersion}")
 
 repositories {
     mavenCentral()
