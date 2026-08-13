@@ -114,6 +114,39 @@ tasks.register('testGreetingTask', Test) {
     }
 }
 
+
+
+sourceSets {
+    functionalTest {
+        java {
+            srcDir 'src/functionalTest/java'
+        }
+        compileClasspath += sourceSets.main.output + sourceSets.test.output
+        runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+    }
+}
+
+configurations {
+    functionalTestImplementation.extendsFrom testImplementation
+    functionalTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+tasks.register('functionalTest', Test) {
+    description = 'Esegue i test funzionali (build reali, richiedono rete/credenziali)'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+
+    useJUnitPlatform()
+
+    jvmArgs(
+        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+        '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+    )
+}
+
+
 test {
     useJUnitPlatform()
 
