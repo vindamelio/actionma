@@ -22,7 +22,7 @@ def gitRel = project.findProperty("gpr.release") ?: null
 
 version = gitRel != null
     ? "${gitVer}"                              
-    : "${gitVer}-SNAPSHOT-${runNumber}" 
+    : "${gitVer}-SNAPSHOT-${gitSha}" 
 
 
 //version = '1.0.1'

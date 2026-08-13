@@ -19,7 +19,7 @@ buildscript {
 
     version = gitRel != null
         ? "${gitVer}"                              
-        : "${gitVer}-SNAPSHOT-${runNumber}" 
+        : "${gitVer}-SNAPSHOT-${gitSha}" 
 
 
     println("task-producer gradle.properties: gitVer=${gitVer} ${gitRel} ${gitSha} ${gitTag} ${use} ${psw} ${version}")
